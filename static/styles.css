@@ -1,28 +1,22 @@
-nav .navbar-brand
+body
+{
+    background-color: #212529;
+}
+
+.form-group
+{
+    margin: 1rem;
+}
+
+.navbar-brand
 {
     /* size for brand */
     font-size: xx-large;
+    margin-left: 4rem;
+    margin-right: 4rem;
 }
 
-/* colors for brand */
-nav .navbar-brand .blue
-{
-    color: #537fbe;
-}
-nav .navbar-brand .red
-{
-    color: #ea433b;
-}
-nav .navbar-brand .yellow
-{
-    color: #f5b82e;
-}
-nav .navbar-brand .green
-{
-    color: #2e944b;
-}
-
-main .form-control
+.form-control
 {
     /* center form controls */
     display: inline-block;
@@ -31,48 +25,45 @@ main .form-control
     width: auto;
 }
 
-main
+.table
 {
-    /* scroll horizontally as needed */
-    overflow-x: auto;
-
-    /* center contents */
-    text-align: center;
+    margin: auto;
+    width: 75%;
 }
 
-main img
-{
-    /* constrain images on small screens */
-    max-width: 100%;
-}
-
-main table
-{
-    text-align: left;
-}
-
-main tfoot
+.tfoot
 {
     font-weight: bold;
 }
-main h1
+
+.h1
 {
     font-family: Tahoma;
 }
 
-/* validation password */
+.btn
+{
+    margin-top: 1rem;
+}
 
-.indication li
+.display-4
 {
-    list-style: none;
-    font-family: Tahoma;
+    margin-bottom: 1.5rem;
+    color: white;
 }
-.indication ul
+
+.form-select
 {
-   background: #3399ff;
-   padding: 20px;
+    width: auto;
+    margin-bottom: 2rem;
 }
-.indication h2
+
+.logout
 {
-   font: italic 10px;
+    margin-right: 2rem;
+}
+
+.navbar-text
+{
+    text-align: center;
 }
