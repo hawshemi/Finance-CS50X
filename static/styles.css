@@ -3,6 +3,19 @@ body
     background-color: #212529;
 }
 
+.password-condition
+{
+    color: silver;
+    font-size: large;
+    margin-left: -2rem;
+}
+
+h2
+{
+    color: silver;
+    font-size: xx-large;
+}
+
 .form-group
 {
     margin: 1rem;
