@@ -31,16 +31,6 @@ body
     width: 75%;
 }
 
-.tfoot
-{
-    font-weight: bold;
-}
-
-.h1
-{
-    font-family: Tahoma;
-}
-
 .btn
 {
     margin-top: 1rem;
@@ -66,4 +56,10 @@ body
 .navbar-text
 {
     text-align: center;
+}
+
+.footer
+{
+    font-size: small;
+    margin-top: 4rem;
 }
