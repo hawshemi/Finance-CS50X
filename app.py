@@ -46,7 +46,6 @@ def is_provided(field):
         return apology(f"Must provide {field}", 400)
 
 
-
 @app.route("/")
 @login_required
 def index():
@@ -84,16 +83,16 @@ def index():
     return render_template("index.html", holdings=holdings, cash=usd(cash),  grand_total=usd(grand_total))
 
 
-@app.route("/bank", methods=["GET", "POST"])
+@app.route("/balance", methods=["GET", "POST"])
 @login_required
-def bank():
+def balance():
     if request.method == "POST":
         # Assign input to variable
-        input_amount = request.form.get("cash")
+        input_amount = int(request.form['cash'])
 
         # Ensure cash amount was submitted
-        if not input_amount:
-            return apology("must provide amount of cash to add", 403)
+        if input_amount == None:
+            return apology("must provide amount of cash to add or remove", 403)
 
         # Query database to update cash
         db.execute("""
@@ -103,14 +102,19 @@ def bank():
         """, amount = input_amount,
         user_id = session["user_id"])
 
-        # Flash info for the user
-        flash(f"You have added {usd(int(input_amount))} to your account")
+        if input_amount > 0:
+            # Flash info for the user
+            flash(f"You have added {usd(input_amount)} to your account")
+        elif input_amount < 0:
+            flash(f"You have subtracted {usd(abs(input_amount))} from your account")
+        else:
+            return apology("you entered zero", 403)
 
         # Redirect to homepage
         return redirect("/")
 
     else:
-        return render_template("bank.html")
+        return render_template("balance.html")
 
 
 @app.route("/buy", methods=["GET", "POST"])
@@ -155,7 +159,7 @@ def buy():
             shares = shares,
             price = stock["price"]
         )
-        flash("Bought!")
+        flash("Bought Successfully.")
 
         return redirect("/")
     else:
@@ -245,7 +249,8 @@ def quote():
     else:
         return render_template("quote.html")
 
-# validation function
+
+# Validation Function
 def validate(password):
     import re # regular expression
     if len(password) < 8:
@@ -256,7 +261,6 @@ def validate(password):
         return apology("Password must contain at least one uppercase letter")
     elif not re.search("[@_!#$%&^*()<>?~+-/\{}:]",password):
         return apology("password must contain at least one special character")
-
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -315,7 +319,7 @@ def sell():
             return apology("invalid number of shares")
 
         # Search for the symbol
-        symbol = request.form.get("symbol").upper()
+        symbol = request.form["symbol"].upper()
         shares = int(request.form.get("shares"))
         stock = lookup(symbol)
         if stock is None:
@@ -359,7 +363,7 @@ def sell():
             shares = -1 * shares,
             price = stock["price"]
         )
-        flash("Sold!")
+        flash("Sold Successfully.")
 
         return redirect("/")
     else:
