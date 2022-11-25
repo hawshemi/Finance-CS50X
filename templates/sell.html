@@ -8,7 +8,7 @@
     <form action="/sell" method="post">
         <div class="form-group">
             <!-- Dropdown -->
-            <select class="form-select text-center mx-auto">
+            <select name="symbol" class="form-select text-center mx-auto">
                 <option disabled selected value="">Select Symbol</option>
                 {% for symbol in symbols %}
                     <option value="{{symbol}}">{{symbol}}</option>
