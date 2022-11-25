@@ -16,6 +16,13 @@ h2
     font-size: xx-large;
 }
 
+.subtract
+{
+    color: silver;
+    font-size: large;
+    margin-bottom: 2rem;
+}
+
 .form-group
 {
     margin: 1rem;
