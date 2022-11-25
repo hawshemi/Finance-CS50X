@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Balance
+{% endblock %}
+
+{% block main %}
+
+  <form action="/balance" method="post">
+      <h2>Enter amount of cash to edit the balance</h2>
+      <p class="subtract">You can enter negative numbers to subtract the balance</p>
+      <div class="form-group">
+            <input autocomplete="off" class="form-control" name="cash" placeholder="i.e., 100 or -100" type="number">
+      </div>
+      <button class="btn btn-primary" type="submit">Edit Balance</button>
+  </form>
+
+{% endblock %}
