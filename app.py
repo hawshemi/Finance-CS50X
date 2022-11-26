@@ -9,6 +9,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers import apology, login_required, lookup, usd
 
+
 # Configure application
 app = Flask(__name__)
 
@@ -22,6 +23,7 @@ def after_request(response):
     response.headers["Expires"] = 0
     response.headers["Pragma"] = "no-cache"
     return response
+
 
 # Custom filter
 app.jinja_env.filters["usd"] = usd
@@ -99,8 +101,8 @@ def balance():
             UPDATE users
             SET cash = cash + :amount
             WHERE id=:user_id
-        """, amount = input_amount,
-        user_id = session["user_id"])
+                    """, amount=input_amount,
+                   user_id=session["user_id"])
 
         if input_amount > 0:
             # Flash info for the user
@@ -144,21 +146,20 @@ def buy():
         if updated_cash < 0:
             return apology("can't afford")
         db.execute("UPDATE users SET cash=:updated_cash WHERE id=:id",
-                    updated_cash=updated_cash,
-                    id=session["user_id"])
+                   updated_cash=updated_cash,
+                   id=session["user_id"])
 
         # Query database for user' transaction
         db.execute("""
             INSERT INTO transactions
                 (user_id, symbol, shares, price)
             VALUES (:user_id, :symbol, :shares, :price)
-
         """,
-            user_id = session["user_id"],
-            symbol = stock["symbol"],
-            shares = shares,
-            price = stock["price"]
-        )
+                   user_id=session["user_id"],
+                   symbol=stock["symbol"],
+                   shares=shares,
+                   price=stock["price"]
+                   )
         flash("Bought Successfully.")
 
         return redirect("/")
@@ -180,6 +181,7 @@ def history():
     for i in range(len(transactions)):
         transactions[i]["price"] = usd(transactions[i]["price"])
     return render_template("history.html", transactions=transactions)
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -245,21 +247,20 @@ def quote():
             'price': usd(stock['price'])
         })
 
-
     else:
         return render_template("quote.html")
 
 
 # Validation Function
 def validate(password):
-    import re # regular expression
+    import re  # regular expression
     if len(password) < 8:
         return apology("Password should be at least 8 characters or longer")
     elif not re.search("[0-9]", password):
         return apology("Password must contain at least one digit")
     elif not re.search("[A-Z]", password):
         return apology("Password must contain at least one uppercase letter")
-    elif not re.search("[@_!#$%&^*()<>?~+-/\{}:]",password):
+    elif not re.search("[@_!#$%&^*()<>?~+-/\{}:]", password):
         return apology("password must contain at least one special character")
 
 
@@ -278,7 +279,6 @@ def register():
         if validation_errors:
             return validation_errors
 
-
         # Ensure password and confirmation match
         if request.form.get("password") != request.form.get("confirmation"):
             return apology("passwords must match")
@@ -286,8 +286,8 @@ def register():
         # Query database for username
         try:
             prim_key = db.execute("INSERT INTO users (username, hash) VALUES (:username, :hash)",
-                    username=request.form.get("username"),
-                    hash=generate_password_hash(request.form.get("password")))
+                                  username=request.form.get("username"),
+                                  hash=generate_password_hash(request.form.get("password")))
         except:
             return apology("username already exixt", 400)
 
@@ -299,8 +299,6 @@ def register():
 
         flash("Registered!")
         return redirect("/")
-
-
 
     else:
         return render_template("register.html")
@@ -325,7 +323,7 @@ def sell():
         if stock is None:
             return apology("invalid symbol")
 
-        #v Query databse and math for sell transactions
+        # Query databse and math for sell transactions
         rows = db.execute("""
             SELECT symbol, SUM(shares) as totalShares
             FROM transactions
@@ -338,7 +336,6 @@ def sell():
                 if shares > row["totalShares"]:
                     return apology("too many shares")
 
-
         # Query database for user' cash and update cash
         rows = db.execute("SELECT Cash FROM users WHERE id=:id", id=session["user_id"])
         cash = rows[0]["cash"]
@@ -348,8 +345,8 @@ def sell():
         if updated_cash < 0:
             return apology("can't afford")
         db.execute("UPDATE users SET cash=:updated_cash WHERE id=:id",
-                    updated_cash=updated_cash,
-                    id=session["user_id"])
+                   updated_cash=updated_cash,
+                   id=session["user_id"])
 
         # Query database for user' transaction
         db.execute("""
@@ -358,11 +355,11 @@ def sell():
             VALUES (:user_id, :symbol, :shares, :price)
 
         """,
-            user_id = session["user_id"],
-            symbol = stock["symbol"],
-            shares = -1 * shares,
-            price = stock["price"]
-        )
+                   user_id=session["user_id"],
+                   symbol=stock["symbol"],
+                   shares=-1 * shares,
+                   price=stock["price"]
+                   )
         flash("Sold Successfully.")
 
         return redirect("/")
