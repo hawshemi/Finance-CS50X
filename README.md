@@ -1,4 +1,4 @@
-# Finance-CS50
+# Finance-CS50X
 
 ## CS50 Week 9 Finance Project.
 
